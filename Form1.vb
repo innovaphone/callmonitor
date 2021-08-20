@@ -90,7 +90,7 @@ Public Class Form1
                             Setup.HideTo.Text = rstr
                         Case "8" : pbxUser = rstr : Setup.PBXObj.Text = rstr
                         Case "9" : Setup.BLFname.Text = rstr
-                            If rstr <> "" Then iBLF.Text = rstr Else iBLF.Text = "innovaphone CallMonitor v1.20 "
+                            If rstr <> "" Then iBLF.Text = rstr Else iBLF.Text = "innovaphone CallMonitor " & My.Application.Info.Version.ToString
                         Case "A" : If rstr = "" Then rstr = "999999"
                             ' Setup.TrunkAc2.Text = rstr
                         Case "B" : If Val(rstr) = 0 Then
