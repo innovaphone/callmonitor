@@ -1,7 +1,9 @@
 ﻿' Copyright innovaphone AG 1997 - 2011
 
 Imports inno.pbx_wsdl
-
+Imports System.Net.Security
+Imports System.Security.Cryptography
+Imports System.Security.Cryptography.X509Certificates
 
 Public Class Form1
     ' the forms PBX link
@@ -36,7 +38,7 @@ Public Class Form1
     Public Shared MinTN, MaxTN As Long
     Dim BLidle, BLsetup, BLcall, BLbusy, BLpresence, BLtrigger As System.Drawing.Color
 
-
+    
 
 
     Public Sub addline(ByVal msg As String)
@@ -113,6 +115,12 @@ Public Class Form1
                             Else
                                 Setup.Foreground.Checked = True
                             End If
+                        Case "N" : Setup.PBXport.Text = rstr
+                        Case "O" : If Val(rstr) = 0 Then
+                                Setup.httpS.Checked = False
+                            Else
+                                Setup.httpS.Checked = True
+                            End If
                         Case Else
                     End Select
                 End If
@@ -125,12 +133,12 @@ Public Class Form1
         Setup.Cpresence.BackColor = BLpresence
         Setup.Ctrigger.BackColor = BLtrigger
         If Me.Tag <> "1" Then
-            If My.Computer.Network.Ping(pbxhanl, 2000) Then  ' Request time-out =2000 ms
-                FileOpen(99, "innoBLF_Event_Log.txt", OpenMode.Append, OpenShare.Shared)
-                PrintLine(99, Now + " Event: PBX ping recieved on " + pbxhanl)
-                FileClose(99)
-            Else
-                If pbxhanl2 <> "" Then
+            If pbxhanl2 <> "" Then
+                If My.Computer.Network.Ping(pbxhanl, 2000) Then  ' Request time-out =2000 ms
+                    FileOpen(99, "innoBLF_Event_Log.txt", OpenMode.Append, OpenShare.Shared)
+                    PrintLine(99, Now + " Event: PBX ping recieved on " + pbxhanl)
+                    FileClose(99)
+                Else
                     If My.Computer.Network.Ping(pbxhanl2, 2000) Then
                         FileOpen(99, "innoBLF_Event_Log.txt", OpenMode.Append, OpenShare.Shared)
                         PrintLine(99, Now + " Event: PBX ping failed on " + pbxhanl + " but ping on " + pbxhanl2 + " successfull, starting with " + pbxhanl2)
@@ -145,7 +153,17 @@ Public Class Form1
             End If
         End If
         TCPid.Text = pbxhanl
-        If Me.Tag = "1" Then pbxUrl = "" Else pbxUrl = "http://" + pbxhanl + "/PBX0/user.soap"
+        If Me.Tag = "1" Then
+            pbxUrl = ""
+        Else
+            If Setup.httpS.Checked = True Then pbxUrl = "https://" Else pbxUrl = "http://"
+            If Setup.PBXport.Text <> "" Then
+                pbxUrl = pbxUrl + pbxhanl + ":" + Setup.PBXport.Text + "/PBX0/user.soap"
+            Else
+                pbxUrl = pbxUrl + pbxhanl + "/PBX0/user.soap"
+            End If
+
+        End If
         FileClose(1)
     End Sub
 
@@ -158,7 +176,7 @@ Public Class Form1
         pbxPoll.Url = pbxUrl
         pbxPoll.PreAuthenticate = True
         pbxPoll.Timeout = 2000
-        pbxPoll.Credentials = New Net.NetworkCredential(httpUser, httpPw, "")
+        pbxPoll.Credentials = New System.Net.NetworkCredential(httpUser, httpPw, "")
         pbxPoll.ConnectionGroupName = "poll" & seq.ToString
         seq = seq + 1
         Return pbxPoll
@@ -207,10 +225,15 @@ Public Class Form1
         ' create the link
         pbxTimer = New myPBX(Me)
         pbxTimer.ConnectionGroupName = "timer"
+
+        'Dim request As HttpWebRequest = CType(HttpWebRequest.Create("https://accounts.google.com/ServiceLoginAuth"), HttpWebRequest)
+
+
         pbxTimer.Url = pbxUrl
         pbxTimer.PreAuthenticate = True
         pbxTimer.Timeout = 2000
-        pbxTimer.Credentials = New Net.NetworkCredential(httpUser, httpPw, "")
+        '    pbxTimer.Credentials = New Net.NetworkCredential(httpUser, httpPw, "")
+        CredentialStart()
         ' set BLF
 
         debugbot.Tag = True
@@ -229,7 +252,18 @@ Public Class Form1
         UseWaitCursor = False
 
     End Sub
+    Private Sub CredentialStart()
+        Try
+            '-- over ride the bad certificate error
+            Dim oCertOverride As New CertificateOverride
+            ServicePointManager.ServerCertificateValidationCallback = AddressOf oCertOverride.RemoteCertificateValidationCallback
+            pbxTimer.Credentials = New System.Net.NetworkCredential(httpUser, httpPw, "")
+            
+        Catch ex As Exception
 
+            Return
+        End Try
+    End Sub
 
     ' Debug Taste toggeln
     Private Sub debugbot_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles debugbot.Click
@@ -1143,6 +1177,11 @@ Faussprung:
 
     End Sub
 
+End Class
+Public Class CertificateOverride
+    Public Function RemoteCertificateValidationCallback(ByVal sender As Object, ByVal certificate As X509Certificate, ByVal chain As X509Chain, ByVal sslPolicyErrors As SslPolicyErrors) As Boolean
+        Return True
+    End Function
 End Class
 
 

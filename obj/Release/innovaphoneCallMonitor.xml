@@ -6,7 +6,11 @@ innovaphoneCallMonitor
 </name>
 </assembly>
 <members>
-<member name="P:inno.My.Resources.Resources.ResourceManager">
+<member name="T:inno.Database1DataSet">
+	<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member><member name="P:inno.My.Resources.Resources.ResourceManager">
 	<summary>
   Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
 </summary>
@@ -607,10 +611,6 @@ Represents a strongly typed in-memory cache of data.
 	<remarks/>
 </member><member name="T:inno.pbx_wsdl.LocationUrlCompletedEventArgs">
 	<remarks/>
-</member><member name="T:inno.Database1DataSet">
-	<summary>
-Represents a strongly typed in-memory cache of data.
-</summary>
 </member>
 </members>
 </doc>

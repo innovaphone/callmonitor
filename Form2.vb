@@ -53,6 +53,12 @@ Public Class Setup
         Else
             PrintLine(1, "M:0")
         End If
+        PrintLine(1, "N:" + PBXport.Text)
+        If Me.httpS.CheckState Then
+            PrintLine(1, "O:1")
+        Else
+            PrintLine(1, "O0:")
+        End If
         FileClose(1)
         Me.Hide()
 

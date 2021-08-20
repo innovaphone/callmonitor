@@ -69,6 +69,9 @@ Partial Class Setup
         Me.Cbusy = New System.Windows.Forms.Label
         Me.Ccall = New System.Windows.Forms.Label
         Me.Cidle = New System.Windows.Forms.Label
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.PBXport = New System.Windows.Forms.TextBox
+        Me.httpS = New System.Windows.Forms.CheckBox
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -551,12 +554,46 @@ Partial Class Setup
         Me.Cidle.Text = "123"
         Me.Cidle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(237, 12)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(26, 13)
+        Me.Label8.TabIndex = 38
+        Me.Label8.Text = "Port"
+        Me.ToolTip1.SetToolTip(Me.Label8, "PBX Port, leave blank if standard")
+        '
+        'PBXport
+        '
+        Me.PBXport.HideSelection = False
+        Me.PBXport.Location = New System.Drawing.Point(269, 9)
+        Me.PBXport.Name = "PBXport"
+        Me.PBXport.Size = New System.Drawing.Size(79, 20)
+        Me.PBXport.TabIndex = 39
+        Me.ToolTip1.SetToolTip(Me.PBXport, "Port of yor PBX, leave blank if standard (example: 8000 , do not enter "":"")")
+        '
+        'httpS
+        '
+        Me.httpS.Location = New System.Drawing.Point(237, 32)
+        Me.httpS.Name = "httpS"
+        Me.httpS.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.httpS.Size = New System.Drawing.Size(111, 23)
+        Me.httpS.TabIndex = 40
+        Me.httpS.Text = "https"
+        Me.httpS.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.httpS, "check if https is used")
+        Me.httpS.UseVisualStyleBackColor = True
+        '
         'Setup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(382, 652)
         Me.ControlBox = False
+        Me.Controls.Add(Me.httpS)
+        Me.Controls.Add(Me.PBXport)
+        Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Foreground)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.ExUser)
@@ -581,8 +618,11 @@ Partial Class Setup
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximumSize = New System.Drawing.Size(390, 680)
+        Me.MinimumSize = New System.Drawing.Size(390, 680)
         Me.Name = "Setup"
-        Me.Text = "Setup CallMonitor v1.21"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds
+        Me.Text = "Setup CallMonitor v1.22"
         Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -633,4 +673,7 @@ Partial Class Setup
     Friend WithEvents BTrigger As System.Windows.Forms.Button
     Friend WithEvents CPRlist As System.Windows.Forms.ComboBox
     Friend WithEvents Foreground As System.Windows.Forms.CheckBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents PBXport As System.Windows.Forms.TextBox
+    Friend WithEvents httpS As System.Windows.Forms.CheckBox
 End Class

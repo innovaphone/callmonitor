@@ -6973,7 +6973,7 @@ Partial Class iBLF
         Me.MaximizeBox = False
         Me.Name = "iBLF"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.Text = "innovaphone CallMonitor v1.10 - trying to connect to PBX and loading data - pleas" & _
+        Me.Text = "innovaphone CallMonitor v1.22 - trying to connect to PBX and loading data - pleas" & _
             "e wait"
         Me.Panel1.ResumeLayout(False)
         CType(Me.PReg, System.ComponentModel.ISupportInitialize).EndInit()
